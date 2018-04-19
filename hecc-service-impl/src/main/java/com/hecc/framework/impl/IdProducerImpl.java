@@ -61,7 +61,7 @@ public class IdProducerImpl implements IdProducer {
     /**
      * 消费一个id
      *
-     * @param bizKey 业务键。
+     * @param bizKey 业务键
      * @return 返回全局唯一的id
      */
     @Override
@@ -73,7 +73,7 @@ public class IdProducerImpl implements IdProducer {
     }
 
     /**
-     * 从队列中获取一个id，如果在超时时间内获取成功，则返回该id，
+     * 从队列中获取一个id，如果在超时时间内获取成功，则返回该id
      * 否则抛出IdProduceException异常
      *
      * @param idQueue 存入id的队列
@@ -98,7 +98,7 @@ public class IdProducerImpl implements IdProducer {
 
     /**
      * 维护id生产者线程
-     * 如果缓存中没有id生产者线程，则创建一个放到缓存中。
+     * 如果缓存中没有id生产者线程，则创建一个放到缓存中
      * 如果缓存中存在id生产者线程并且该线程已处于终止状态，则创建一个新的线程替换缓存中的线程
      *
      * @param bizKey  业务键
@@ -156,8 +156,8 @@ public class IdProducerImpl implements IdProducer {
     }
 
     /**
-     * 从map中获取一个线程，如果获取到了，则直接返回，
-     * 否则，创建并启动一个线程，并将该线程返回。
+     * 从map中获取一个线程，如果获取到了，则直接返回
+     * 否则，创建并启动一个线程，并将该线程返回
      * 该线程用于生成id，并将id存入队列
      *
      * @param bizKey         业务键

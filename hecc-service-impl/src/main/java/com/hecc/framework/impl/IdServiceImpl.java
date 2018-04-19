@@ -26,7 +26,7 @@ public class IdServiceImpl implements IdService {
         try {
             return idProducer.consume(key);
         } catch (IdProduceException e) {
-            logger.error("获取id异常，key="+key,e);
+            logger.error("获取id异常，key = "+key,e);
             throw new RuntimeException(e);
         }
     }
