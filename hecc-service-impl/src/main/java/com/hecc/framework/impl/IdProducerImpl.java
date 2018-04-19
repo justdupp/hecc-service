@@ -30,17 +30,17 @@ public class IdProducerImpl implements IdProducer {
     /**
      * 线程组，每一个业务键一个线程
      */
-    private static final ConcurrentMap<String, Thread> producerThreads = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, Thread> PRODUCER_THREADS = new ConcurrentHashMap<>();
 
     /**
      * id队列组，每一个业务键一个id队列
      */
-    private static final ConcurrentMap<String, Queue<Long>> ids = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, Queue<Long>> IDS = new ConcurrentHashMap<>();
 
     /**
      * 获取id的超时时间 单位:毫秒
      */
-    private static final long idConsumeTimeOut = 20 * 1000;
+    private static final long ID_CONSUME_TIMEOUT = 20 * 1000;
 
     /**
      * id产生速度 单位：毫秒
@@ -82,7 +82,7 @@ public class IdProducerImpl implements IdProducer {
      */
     private long pullOne(Queue<Long> idQueue) throws IdProduceException {
         final long historicTimeMillis = System.currentTimeMillis();
-        while (System.currentTimeMillis() - historicTimeMillis <= idConsumeTimeOut) {
+        while (System.currentTimeMillis() - historicTimeMillis <= ID_CONSUME_TIMEOUT) {
             Long result = idQueue.poll();
             if (result != null) {
                 return result;
@@ -93,7 +93,7 @@ public class IdProducerImpl implements IdProducer {
             }
         }
         throw new IdProduceException(String.format("在（%d）秒内无法从Redis获取Id片断。",
-                TimeUnit.MILLISECONDS.toSeconds(idConsumeTimeOut)));
+                TimeUnit.MILLISECONDS.toSeconds(ID_CONSUME_TIMEOUT)));
     }
 
     /**
@@ -165,7 +165,7 @@ public class IdProducerImpl implements IdProducer {
      * @return Thread id生产者线程对象
      */
     private Thread getProducerThread(String bizKey, Supplier<Thread> threadSupplier) {
-        return producerThreads.computeIfAbsent(bizKey,
+        return PRODUCER_THREADS.computeIfAbsent(bizKey,
                 key -> {
                     final Thread producerThread = threadSupplier.get();
                     producerThread.start();
@@ -180,7 +180,7 @@ public class IdProducerImpl implements IdProducer {
      * @param threadSupplier id生产者线程对象提供者
      */
     private void replaceProducerThread(String bizKey, Supplier<Thread> threadSupplier) {
-        producerThreads.computeIfPresent(bizKey,
+        PRODUCER_THREADS.computeIfPresent(bizKey,
                 (key, originalThread) -> {
                     final Thread producerThread = threadSupplier.get();
                     producerThread.start();
@@ -196,6 +196,6 @@ public class IdProducerImpl implements IdProducer {
      * @return Queue<Long> 存放id的队列
      */
     private Queue<Long> getIdQueue(String bizKey) {
-        return ids.computeIfAbsent(bizKey, key -> new ConcurrentLinkedQueue<>());
+        return IDS.computeIfAbsent(bizKey, key -> new ConcurrentLinkedQueue<>());
     }
 }

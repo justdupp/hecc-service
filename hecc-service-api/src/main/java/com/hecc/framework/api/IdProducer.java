@@ -12,8 +12,9 @@ public interface IdProducer {
     /**
      * 消费一个id
      *
-     * @param bizKey 业务键。
-     * @return 返回全局唯一的Id值。
+     * @param bizKey 业务键
+     * @return 返回全局唯一的id值
+     * @throws IdProduceException
      */
     long consume(String bizKey) throws IdProduceException;
 }

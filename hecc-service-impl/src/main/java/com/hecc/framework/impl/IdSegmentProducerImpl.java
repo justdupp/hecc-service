@@ -56,12 +56,12 @@ public class IdSegmentProducerImpl implements IdSegmentProducer {
     /**
      * 线程组
      */
-    private static final ConcurrentMap<String, Thread> producerThreads = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, Thread> PRODUCER_THREADS = new ConcurrentHashMap<>();
 
     /**
      * id片断队列组
      */
-    private static final ConcurrentMap<String, Queue<IdSegment>> idSegmentQueues = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, Queue<IdSegment>> ID_SEGMENT_QUEUES = new ConcurrentHashMap<>();
 
     @Autowired
     private JedisPool jedisPool;
@@ -157,7 +157,7 @@ public class IdSegmentProducerImpl implements IdSegmentProducer {
     }
 
     private Thread getProducerThread(String bizKey, Supplier<Thread> threadSupplier) {
-        return producerThreads.computeIfAbsent(bizKey,
+        return PRODUCER_THREADS.computeIfAbsent(bizKey,
                 key -> {
                     final Thread producerThread = threadSupplier.get();
                     producerThread.start();
@@ -166,7 +166,7 @@ public class IdSegmentProducerImpl implements IdSegmentProducer {
     }
 
     private Thread replaceProducerThread(String bizKey, Supplier<Thread> threadSupplier) {
-        return producerThreads.computeIfPresent(bizKey,
+        return PRODUCER_THREADS.computeIfPresent(bizKey,
                 (key, originalThread) -> {
                     final Thread producerThread = threadSupplier.get();
                     producerThread.start();
@@ -175,6 +175,6 @@ public class IdSegmentProducerImpl implements IdSegmentProducer {
     }
 
     private Queue<IdSegment> getIdSegmentQueue(String bizKey) {
-        return idSegmentQueues.computeIfAbsent(bizKey, key -> new ConcurrentLinkedQueue<>());
+        return ID_SEGMENT_QUEUES.computeIfAbsent(bizKey, key -> new ConcurrentLinkedQueue<>());
     }
 }

@@ -25,7 +25,7 @@ public class IdServiceImplTest {
     private IdServiceImpl idService;
 
     @Test
-    public void getNumId() {
+    public void getId() {
         CountDownLatch latch = new CountDownLatch(100);
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         for (int i = 0; i < 100; i++) {
