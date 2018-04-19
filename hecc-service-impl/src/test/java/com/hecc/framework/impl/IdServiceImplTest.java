@@ -31,9 +31,9 @@ public class IdServiceImplTest {
         for (int i = 0; i < 100; i++) {
             executorService.execute(() -> {
                 String key = "test";
-                long numId = idService.getId(key);
+                long id = idService.getId(key);
                 latch.countDown();
-                System.out.println("=================numberId:" + numId + ",threadId:" + Thread.currentThread().getId());
+                System.out.println("=================bizId:" + id + ",threadId:" + Thread.currentThread().getId());
             });
         }
         try {
