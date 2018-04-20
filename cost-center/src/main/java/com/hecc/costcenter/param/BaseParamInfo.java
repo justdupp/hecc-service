@@ -12,7 +12,7 @@ public class BaseParamInfo implements Serializable {
     private Integer page;
     private Integer rows;
     private Boolean total;
-    
+
     public Integer getPage() {
         return page;
     }
