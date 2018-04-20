@@ -1,0 +1,17 @@
+spring:
+   application:
+         name: base-service
+redis:
+    host: 116.62.213.174
+    port: 6379
+    timeout: 300
+    poolMaxTotal: 10
+    poolMaxIdle: 10
+    poolMaxWait: 3
+
+server:
+   port: 8088
+eureka:
+   client:
+       serviceUrl:
+           defaultZone: http://localhost:8081/eureka/

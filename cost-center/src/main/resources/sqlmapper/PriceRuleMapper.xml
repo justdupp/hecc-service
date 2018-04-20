@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hecc.costcenter.mapper.PriceRuleDao">
+    <resultMap id="ResultMap" type="PriceRuleEntity">
+        <result property="id" column="id"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="version" column="version"/>
+        <result property="createName" column="create_name"/>
+        <result property="modifyName" column="modify_name"/>
+        <result property="ruleName" column="rule_name"/>
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="useful" column="useful"/>
+        <result property="del" column="del"/>
+        <result property="salePrice" column="sale_price"/>
+        <result property="renewPrice" column="renew_price"/>
+    </resultMap>
+
+    <sql id="listWhere">
+        where product_id = #{param.productId} and del = 0
+    </sql>
+
+    <select id="getListByParam" resultMap="ResultMap">
+        select * from cost_price_rule
+        <include refid="listWhere"/>
+        order by create_date desc
+        limit #{param.page} ,#{param.rows}
+    </select>
+
+    <select id="getTotalByParam" resultType="java.lang.Integer">
+        select count(1) from cost_price_rule
+        <include refid="listWhere"/>
+    </select>
+
+    <insert id="create">
+        insert into cost_price_rule
+        (id,create_name,create_date,modify_name,rule_name,product_id,useful,sale_price,renew_price)
+        values
+        (#{param.id},#{param.createName},now(),#{param.modifyName},#{param.ruleName},#{param.productId},#{param.useful},#{param.salePrice},#{param.renewPrice})
+    </insert>
+
+</mapper>

@@ -1,0 +1,22 @@
+spring:
+   application:
+        name: cost-center
+   datasource:
+       url: jdbc:mysql://47.100.55.4:3306/xhj_db?characterEncoding=utf-8
+       username: xhj
+       password: Xhj123qwer@
+       driver-class-name: com.mysql.jdbc.Driver
+
+server:
+   port: 8090
+eureka:
+   client:
+       serviceUrl:
+           defaultZone: http://localhost:8081/eureka/
+mybatis:
+  mapper-locations: classpath:sqlmapper/*Mapper.xml
+  type-aliases-package: com.hecc.costcenter.entity
+
+cost-center-swagger2:
+     hostname: localhost:8090
+     isEnable: true

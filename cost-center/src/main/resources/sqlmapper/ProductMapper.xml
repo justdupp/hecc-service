@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hecc.costcenter.mapper.ProductDao">
+    <resultMap id="ResultMap" type="ProductEntity">
+        <result property="id" column="id"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="version" column="version"/>
+        <result property="createName" column="create_name"/>
+        <result property="modifyName" column="modify_name"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="shelf" column="shelf"/>
+        <result property="productDesc" column="product_desc"/>
+    </resultMap>
+
+    <sql id="listWhere">
+        where 1 = 1
+        <if test="null != param.id">
+            and id = #{param.id}
+        </if>
+        <if test="null != param.shelf">
+            and shelf = #{param.shelf}
+        </if>
+    </sql>
+
+    <select id="getProductListByParam" resultMap="ResultMap">
+        select * from cost_product
+        <include refid="listWhere"/>
+        order by create_date desc
+        limit #{param.page} ,#{param.rows}
+    </select>
+
+    <select id="getProductTotalByParam" resultType="java.lang.Integer">
+        select count(1) from cost_product
+        <include refid="listWhere"/>
+    </select>
+
+    <select id="getListByName" resultMap="ResultMap">
+        select * from cost_product
+        where name = #{param.name}
+    </select>
+
+    <select id="getListByCode" resultMap="ResultMap">
+        select * from cost_product
+        where code = #{param.code}
+    </select>
+
+    <insert id="create">
+        insert into cost_product
+        (id,create_name,create_date,modify_name,name,code,shelf,product_desc)
+        values
+        (#{param.id},#{param.createName},now(),#{param.modifyName},#{param.name},#{param.code},#{param.shelf},#{param.productDesc})
+    </insert>
+
+    <update id="updateShelf">
+        update cost_product
+        set version = version + 1,
+        shelf = #{param.shelf},
+        modify_name = #{param.modifyName}
+        where id = #{param.id}
+    </update>
+
+    <select id="getEntityById" resultMap="ResultMap">
+        select * from cost_product
+        where id = #{id}
+    </select>
+
+    <update id="update">
+        update cost_product
+        set version = version + 1,
+        name = #{param.name},
+        code = #{param.code},
+        shelf = #{param.shelf},
+        product_desc = #{param.productDesc},
+        modify_name = #{param.modifyName}
+        where id = #{param.id}
+    </update>
+
+</mapper>
