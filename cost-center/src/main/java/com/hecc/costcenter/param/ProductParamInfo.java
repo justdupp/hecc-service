@@ -2,10 +2,11 @@ package com.hecc.costcenter.param;
 
 /**
  * @author xuhoujun
- * @description:
+ * @description: 产品请求参数
  * @date: Created In 上午12:31 on 2018/4/21.
  */
 public class ProductParamInfo extends BaseParamInfo {
+
     /**
      * 产品id
      */

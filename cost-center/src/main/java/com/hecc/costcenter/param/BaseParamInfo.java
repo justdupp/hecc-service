@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author xuhoujun
- * @description:
+ * @description: 基本请求参数
  * @date: Created In 上午12:30 on 2018/4/21.
  */
 public class BaseParamInfo implements Serializable {
