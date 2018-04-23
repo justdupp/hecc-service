@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author xuhoujun
- * @description:
+ * @description: 续约价格实体
  * @date: Created In 下午9:34 on 2018/4/23.
  */
 public class RenewPriceEntity implements Serializable {

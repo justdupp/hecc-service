@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @author xuhoujun
- * @description:
+ * @description: 定价规则服务实现
  * @date: Created In 下午9:29 on 2018/4/23.
  */
 @Service
