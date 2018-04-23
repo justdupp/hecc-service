@@ -2,6 +2,9 @@ package com.hecc.costcenter.entity;
 
 import org.apache.ibatis.type.Alias;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author xuhoujun
  * @description: 产品定价实体类
@@ -46,6 +49,14 @@ public class PriceRuleEntity extends BaseEntity {
      * 续约价格json
      */
     private String renewPrice;
+    /**
+     * 续约价对象
+     */
+    private RenewPriceEntity renewPriceInfo;
+    /**
+     * 定价策略包含租户
+     */
+    private List<PriceTenantEntity> tenantEntityList = new ArrayList<>();
 
     public String getCreateName() {
         return createName;
@@ -117,6 +128,22 @@ public class PriceRuleEntity extends BaseEntity {
 
     public void setRenewPrice(String renewPrice) {
         this.renewPrice = renewPrice;
+    }
+
+    public RenewPriceEntity getRenewPriceInfo() {
+        return renewPriceInfo;
+    }
+
+    public void setRenewPriceInfo(RenewPriceEntity renewPriceInfo) {
+        this.renewPriceInfo = renewPriceInfo;
+    }
+
+    public List<PriceTenantEntity> getTenantEntityList() {
+        return tenantEntityList;
+    }
+
+    public void setTenantEntityList(List<PriceTenantEntity> tenantEntityList) {
+        this.tenantEntityList = tenantEntityList;
     }
 }
 
