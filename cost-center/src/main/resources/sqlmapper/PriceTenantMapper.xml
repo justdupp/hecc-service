@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hecc.costcenter.mapper.PriceTenantDao">
+    <resultMap id="ResultMap" type="PriceTenantEntity">
+        <result property="id" column="id"/>
+        <result property="version" column="version"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="pid" column="pid"/>
+        <result property="tenantId" column="tenant_id"/>
+    </resultMap>
+
+
+    <select id="getListByPid" resultMap="ResultMap">
+        select * from cost_price_tenant where pid = #{pid}
+    </select>
+
+    <select id="getListByRuleIds" resultMap="ResultMap">
+        select * from cost_price_tenant
+        where tenant_id = #{tenantId}
+        and pid in
+        <foreach collection="list" open="(" close=")" index="index" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteByPid">
+        delete from cost_price_tenant
+        where pid = #{pid}
+    </delete>
+
+    <insert id="createBatch">
+        insert ignore into cost_price_tenant
+        (id,create_date,pid,tenant_id)
+        VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{item.id},now(),#{item.pid},#{item.tenantId})
+        </foreach>
+        ;
+    </insert>
+
+</mapper>
