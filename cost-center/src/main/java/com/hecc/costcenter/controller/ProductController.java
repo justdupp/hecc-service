@@ -1,6 +1,9 @@
 package com.hecc.costcenter.controller;
 
+import com.hecc.costcenter.aop.ControllerAop;
 import com.hecc.costcenter.entity.ProductEntity;
+import com.hecc.costcenter.entity.ResultBean;
+import com.hecc.costcenter.param.ProductParamInfo;
 import com.hecc.costcenter.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +29,21 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    /**
+     * 产品管理-列表
+     * @return
+     */
+    @ApiOperation(value = "产品列表")
+    @RequestMapping(value = "/list", method = {RequestMethod.POST})
+    public ResultBean<ProductEntity> getList(ProductParamInfo paramInfo) {
+        int total = ControllerAop.defaultPage;
+        if (paramInfo.getTotal()) {
+            total = this.productService.getProductTotalByParam(paramInfo);
+        }
+        return new ResultBean<>(this.productService.getProductListByParam(paramInfo), total);
+    }
+
 
     /**
      * 新增产品
