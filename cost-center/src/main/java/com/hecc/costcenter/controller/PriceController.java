@@ -44,7 +44,7 @@ public class PriceController {
      * 产品定价-列表
      * @return
      */
-    @RequestMapping(value = "price/list", method = RequestMethod.POST)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getPriceList(PriceParamInfo paramInfo) {
         Integer total = 0;
@@ -76,7 +76,7 @@ public class PriceController {
      * 新增产品定价策略
      * @return
      */
-    @RequestMapping(value = "price/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String create(@RequestBody PriceRuleEntity priceRuleEntity) {
         try {
@@ -94,7 +94,7 @@ public class PriceController {
      * 产品定价-删除
      * @return
      */
-    @RequestMapping(value = "price/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String deletePrice(Long id) {
         try {
@@ -116,7 +116,7 @@ public class PriceController {
      * 产品定价策略--详情
      * @return
      */
-    @RequestMapping(value = "price/detail", method = RequestMethod.POST)
+    @RequestMapping(value = "/detail", method = RequestMethod.POST)
     @ResponseBody
     public PriceRuleEntity getPriceRuleById(Long id) {
         PriceRuleEntity priceRuleEntity = this.priceRuleService.getEntityById(id);
@@ -144,7 +144,7 @@ public class PriceController {
      * 产品定价--修改
      * @return
      */
-    @RequestMapping(value = "price/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public String updatePrice(@RequestBody PriceRuleEntity priceRuleInfo) {
         try {
