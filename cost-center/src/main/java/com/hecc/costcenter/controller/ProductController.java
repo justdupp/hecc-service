@@ -32,6 +32,7 @@ public class ProductController {
 
     /**
      * 产品管理-列表
+     *
      * @return
      */
     @ApiOperation(value = "产品列表")
@@ -47,6 +48,7 @@ public class ProductController {
 
     /**
      * 新增产品
+     *
      * @return
      */
     @ApiOperation(value = "获取卡列表")
@@ -54,10 +56,10 @@ public class ProductController {
     @ResponseBody
     public String create(@RequestBody ProductEntity productInfo) {
         try {
-            if(productInfo==null || StringUtils.isEmpty(productInfo.getName())){
+            if (productInfo == null || StringUtils.isEmpty(productInfo.getName())) {
                 return "产品名称不能为空";
             }
-            if(StringUtils.isEmpty(productInfo.getCode())){
+            if (StringUtils.isEmpty(productInfo.getCode())) {
                 return "产品编码不能为空";
             }
             productInfo.setCreateName("admin");
@@ -71,13 +73,14 @@ public class ProductController {
 
     /**
      * 产品--上架
+     *
      * @return
      */
     @RequestMapping(value = "upShelf", method = RequestMethod.POST)
     @ResponseBody
     public String upShelf(Long id) {
         try {
-            if(id == null){
+            if (id == null) {
                 return "参数错误";
             }
 
@@ -95,13 +98,14 @@ public class ProductController {
 
     /**
      * 产品--下架
+     *
      * @return
      */
     @RequestMapping(value = "downShelf", method = RequestMethod.POST)
     @ResponseBody
     public String downShelf(Long id) {
         try {
-            if(id == null){
+            if (id == null) {
                 return "参数错误";
             }
             ProductEntity productInfo = new ProductEntity();
@@ -118,6 +122,7 @@ public class ProductController {
 
     /**
      * 产品--详情
+     *
      * @return
      */
     @RequestMapping(value = "detail", method = RequestMethod.POST)
@@ -128,13 +133,14 @@ public class ProductController {
 
     /**
      * 产品--修改
+     *
      * @return
      */
     @RequestMapping(value = "update", method = RequestMethod.POST)
     @ResponseBody
     public String update(@RequestBody ProductEntity productInfo) {
         try {
-            if(productInfo == null){
+            if (productInfo == null) {
                 return "参数错误";
             }
             productInfo.setModifyName("admin");

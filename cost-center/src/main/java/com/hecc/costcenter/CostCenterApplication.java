@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableEurekaClient
 public class CostCenterApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CostCenterApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CostCenterApplication.class, args);
+    }
 }

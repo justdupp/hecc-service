@@ -9,8 +9,17 @@ import java.io.Serializable;
  */
 public class BaseParamInfo implements Serializable {
 
+    /**
+     * 页数
+     */
     private Integer page;
+    /**
+     * 行数
+     */
     private Integer rows;
+    /**
+     * 是否查询全部
+     */
     private Boolean total;
 
     public Integer getPage() {

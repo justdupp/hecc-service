@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("base-service")
 public interface IdClient {
 
-    @RequestMapping(value = "base/getId",method = RequestMethod.GET)
+    @RequestMapping(value = "base/getId", method = RequestMethod.GET)
     long getId(@RequestParam("bizKey") String bizKey);
 }

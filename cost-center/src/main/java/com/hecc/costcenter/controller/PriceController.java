@@ -42,6 +42,7 @@ public class PriceController {
 
     /**
      * 产品定价-列表
+     *
      * @return
      */
     @RequestMapping(value = "/list", method = RequestMethod.POST)
@@ -55,10 +56,10 @@ public class PriceController {
             if (!priceRuleList.isEmpty()) {
                 total = this.priceRuleService.getTotalByParam(paramInfo);
                 //产品名称
-                for(PriceRuleEntity ruleInfo : priceRuleList){
-                    if(ruleInfo.getProductId() != null){
+                for (PriceRuleEntity ruleInfo : priceRuleList) {
+                    if (ruleInfo.getProductId() != null) {
                         ProductEntity productInfo = this.productService.getEntityById(ruleInfo.getProductId());
-                        if(productInfo != null){
+                        if (productInfo != null) {
                             ruleInfo.setProductName(productInfo.getName());
                         }
                     }
@@ -74,6 +75,7 @@ public class PriceController {
 
     /**
      * 新增产品定价策略
+     *
      * @return
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -92,13 +94,14 @@ public class PriceController {
 
     /**
      * 产品定价-删除
+     *
      * @return
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String deletePrice(Long id) {
         try {
-            if(id == null){
+            if (id == null) {
                 return "参数错误";
             }
             PriceRuleEntity priceRuleInfo = new PriceRuleEntity();
@@ -114,27 +117,28 @@ public class PriceController {
 
     /**
      * 产品定价策略--详情
+     *
      * @return
      */
     @RequestMapping(value = "/detail", method = RequestMethod.POST)
     @ResponseBody
     public PriceRuleEntity getPriceRuleById(Long id) {
         PriceRuleEntity priceRuleEntity = this.priceRuleService.getEntityById(id);
-        if(priceRuleEntity!=null && priceRuleEntity.getProductId()!=null){
+        if (priceRuleEntity != null && priceRuleEntity.getProductId() != null) {
             //产品名称
             ProductEntity productInfo = this.productService.getEntityById(priceRuleEntity.getProductId());
-            if(productInfo != null){
+            if (productInfo != null) {
                 priceRuleEntity.setProductName(productInfo.getName());
             }
             //定价包含租户
             List<PriceTenantEntity> tenantInfoList = this.priceTenantService.getListByPid(priceRuleEntity.getId());
-            if(tenantInfoList != null && tenantInfoList.size()>0){
-                for(PriceTenantEntity tenantInfo : tenantInfoList){
+            if (tenantInfoList != null && tenantInfoList.size() > 0) {
+                for (PriceTenantEntity tenantInfo : tenantInfoList) {
                     // TODO: 2018-04-21  这里可以调用租户服务 来获取租户相关信息
                 }
                 priceRuleEntity.setTenantEntityList(tenantInfoList);
             }
-        }else {
+        } else {
             priceRuleEntity = new PriceRuleEntity();
         }
         return priceRuleEntity;
@@ -142,13 +146,14 @@ public class PriceController {
 
     /**
      * 产品定价--修改
+     *
      * @return
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public String updatePrice(@RequestBody PriceRuleEntity priceRuleInfo) {
         try {
-            if(priceRuleInfo == null || priceRuleInfo.getId()==null){
+            if (priceRuleInfo == null || priceRuleInfo.getId() == null) {
                 return "参数错误";
             }
             priceRuleInfo.setModifyName("admin");
@@ -162,28 +167,29 @@ public class PriceController {
 
     /**
      * 定价租户--保存
+     *
      * @return
      */
     @RequestMapping(value = "save/tenant", method = RequestMethod.POST)
     @ResponseBody
     public String saveTenant(@RequestBody PriceRuleEntity priceRuleInfo) {
         try {
-            if(priceRuleInfo == null || priceRuleInfo.getId()==null){
+            if (priceRuleInfo == null || priceRuleInfo.getId() == null) {
                 return "参数错误";
             }
             //tenantId重复校验
-            if(!priceRuleInfo.getTenantEntityList().isEmpty()){
+            if (!priceRuleInfo.getTenantEntityList().isEmpty()) {
                 List<Long> idList = new ArrayList<>();
                 List<Long> repeatList = new ArrayList<>();
-                for(PriceTenantEntity inf : priceRuleInfo.getTenantEntityList()){
-                    if(idList.contains(inf.getTenantId())){
+                for (PriceTenantEntity inf : priceRuleInfo.getTenantEntityList()) {
+                    if (idList.contains(inf.getTenantId())) {
                         repeatList.add(inf.getTenantId());
-                    }else{
+                    } else {
                         idList.add(inf.getTenantId());
                     }
                 }
-                if(repeatList.size() > 0){
-                    return "租户id"+repeatList.toString()+"重复设置";
+                if (repeatList.size() > 0) {
+                    return "租户id" + repeatList.toString() + "重复设置";
                 }
             }
             //校验租户是否在其他策略中
@@ -194,17 +200,17 @@ public class PriceController {
 
             //若选择租户，租户全选标志必须非全选，租户只能有一个策略
             List<Long> ruleIdList = new ArrayList<>();
-            for(PriceRuleEntity ruleInfo : ruleInfoList){
-                if(!ruleInfo.getId().equals(priceRuleInfo.getId())){
+            for (PriceRuleEntity ruleInfo : ruleInfoList) {
+                if (!ruleInfo.getId().equals(priceRuleInfo.getId())) {
                     ruleIdList.add(ruleInfo.getId()); //不含当前策略id
                 }
             }
-            if(ruleIdList.size() > 0){
-                for(PriceTenantEntity tenantInfo : priceRuleInfo.getTenantEntityList()){
+            if (ruleIdList.size() > 0) {
+                for (PriceTenantEntity tenantInfo : priceRuleInfo.getTenantEntityList()) {
                     List<PriceTenantEntity> tenantList = this.priceTenantService.getListByRuleIds(tenantInfo.getTenantId(), ruleIdList);
-                    if(!tenantList.isEmpty()){
+                    if (!tenantList.isEmpty()) {
                         PriceRuleEntity otherRule = this.priceRuleService.getEntityById(tenantList.get(0).getPid());
-                        return "租户["+tenantInfo.getTenantId()+"]已在定价["+otherRule.getRuleName()+"]中";
+                        return "租户[" + tenantInfo.getTenantId() + "]已在定价[" + otherRule.getRuleName() + "]中";
                     }
                 }
             }
