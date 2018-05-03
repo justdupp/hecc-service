@@ -125,12 +125,16 @@ public class PriceController {
     public PriceRuleEntity getPriceRuleById(Long id) {
         PriceRuleEntity priceRuleEntity = this.priceRuleService.getEntityById(id);
         if (priceRuleEntity != null && priceRuleEntity.getProductId() != null) {
-            //产品名称
+            /**
+             * 产品名称
+             */
             ProductEntity productInfo = this.productService.getEntityById(priceRuleEntity.getProductId());
             if (productInfo != null) {
                 priceRuleEntity.setProductName(productInfo.getName());
             }
-            //定价包含租户
+            /**
+             * 定价包含租户
+             */
             List<PriceTenantEntity> tenantInfoList = this.priceTenantService.getListByPid(priceRuleEntity.getId());
             if (tenantInfoList != null && tenantInfoList.size() > 0) {
                 for (PriceTenantEntity tenantInfo : tenantInfoList) {
@@ -177,7 +181,9 @@ public class PriceController {
             if (priceRuleInfo == null || priceRuleInfo.getId() == null) {
                 return "参数错误";
             }
-            //tenantId重复校验
+            /**
+             * tenantId重复校验
+             */
             if (!priceRuleInfo.getTenantEntityList().isEmpty()) {
                 List<Long> idList = new ArrayList<>();
                 List<Long> repeatList = new ArrayList<>();
@@ -192,17 +198,23 @@ public class PriceController {
                     return "租户id" + repeatList.toString() + "重复设置";
                 }
             }
-            //校验租户是否在其他策略中
+            /**
+             * 校验租户是否在其他策略中
+             */
             PriceRuleEntity entity = this.priceRuleService.getEntityById(priceRuleInfo.getId());
             PriceParamInfo paramInfo = new PriceParamInfo();
             paramInfo.setProductId(entity.getProductId());
             List<PriceRuleEntity> ruleInfoList = this.priceRuleService.getRuleListByProductId(paramInfo);
-
-            //若选择租户，租户全选标志必须非全选，租户只能有一个策略
+            /**
+             * 若选择租户，租户全选标志必须非全选，租户只能有一个策略
+             */
             List<Long> ruleIdList = new ArrayList<>();
             for (PriceRuleEntity ruleInfo : ruleInfoList) {
                 if (!ruleInfo.getId().equals(priceRuleInfo.getId())) {
-                    ruleIdList.add(ruleInfo.getId()); //不含当前策略id
+                    /**
+                     * 不含当前策略id
+                     */
+                    ruleIdList.add(ruleInfo.getId());
                 }
             }
             if (ruleIdList.size() > 0) {
