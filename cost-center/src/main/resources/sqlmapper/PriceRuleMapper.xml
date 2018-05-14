@@ -40,4 +40,37 @@
         (#{param.id},#{param.createName},now(),#{param.modifyName},#{param.ruleName},#{param.productId},#{param.useful},#{param.salePrice},#{param.renewPrice})
     </insert>
 
+
+    <delete id="delete">
+        update cost_price_rule
+        set version = version + 1,
+        del = 1,
+        modify_name = #{param.modifyName}
+        where id = #{param.id}
+    </delete>
+
+
+    <select id="getEntityById" resultMap="ResultMap">
+        select * from cost_price_rule
+        WHERE id = #{id}
+    </select>
+
+    <update id="update">
+        update cost_price_rule
+        set version = version + 1,
+        rule_name = #{param.ruleName},
+        useful = #{param.useful},
+        sale_price = #{param.salePrice},
+        renew_price = #{param.renewPrice},
+        modify_name = #{param.modifyName}
+        where id = #{param.id}
+    </update>
+
+    <select id="getRuleListByProductId" resultMap="ResultMap">
+        select * from cost_price_rule
+        where product_id = #{param.productId}
+        and del = 0
+        order by create_date desc
+    </select>
+
 </mapper>
